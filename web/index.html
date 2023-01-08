@@ -56,28 +56,14 @@
     });
 
 </script>
-<script type="module">
-  // Import the functions you need from the SDKs you need
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-app.js";
-  import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.15.0/firebase-analytics.js";
-  // TODO: Add SDKs for Firebase products that you want to use
-  // https://firebase.google.com/docs/web/setup#available-libraries
-
-  // Your web app's Firebase configuration
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-  const firebaseConfig = {
-    apiKey: "AIzaSyCISBvlCyvAL1acmyYM-VCOKW6dr5EBRDA",
-    authDomain: "flutter-web-9119f.firebaseapp.com",
-    projectId: "flutter-web-9119f",
-    storageBucket: "flutter-web-9119f.appspot.com",
-    messagingSenderId: "873777873874",
-    appId: "1:873777873874:web:7c16264db6f36586487e0b",
-    measurementId: "G-RYHF03P3Y1"
-  };
-
-  // Initialize Firebase
-  const app = initializeApp(firebaseConfig);
-  const analytics = getAnalytics(app);
-</script>
+<script type="text/javascript">
+    let useHtml = // ...
+    if(useHtml) {
+      window.flutterWebRenderer = "html";
+    } else {
+      window.flutterWebRenderer = "canvaskit";
+    }
+  </script>
+<script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>
