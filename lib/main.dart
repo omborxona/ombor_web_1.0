@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_core/firebase_core.dart';
+import 'package:ombor_web/admin/sample_page.dart';
+import 'package:ombor_web/user/sample_page_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'firebase_options.dart';
 
 void main() async {
@@ -45,18 +48,108 @@ class _MyHomePageState extends State<MyHomePage> {
   bool _validatePassword = false;
   bool _isLoading = false;
 
-  //https://golalang-online-sklad-production.up.railway.app/login
   Future<void> _login() async {
-
     final response = await http.post(
       Uri.parse(
-          "https://golalang-online-sklad-production.up.railway.app/login"),
-      body: jsonEncode({
-        "username": _emailController.text,
-        "password": _passwordController.text,
+          'https://golalang-online-sklad-production.up.railway.app/login'),
+      body: jsonEncode(<String, String>{
+        'username': _emailController.text,
+        'password': _passwordController.text,
       }),
     );
-    print(response.body);
+    if (response.statusCode == 200) {
+      _isLoading = false;
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      final data = jsonDecode(response.body);
+      if (data['message'] == 'User not found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Bunday foydalanuvchi mavjud emas'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            duration: Duration(milliseconds: 1700),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+          ),
+        );
+        _isLoading = false;
+        setState(() {});
+        return;
+      }
+      if (data['message'] == 'Wrong password') {
+        _isLoading = false;
+        _passwordController.clear();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Parolingiz noto\'g\'ri'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            duration: Duration(milliseconds: 1700),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {});
+        return;
+      }
+      if (data['message'] == 'User blocked') {
+        _isLoading = false;
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Foydalanuvchi bloklangan iltimos administrator bilan bog\'laning'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
+            ),
+            duration: Duration(milliseconds: 3000),
+            behavior: SnackBarBehavior.floating,
+            backgroundColor: Colors.red,
+          ),
+        );
+        setState(() {});
+        return;
+      }
+      prefs.setString('name', data['name']);
+      prefs.setString('surname', data['surname']);
+      prefs.setString('phone', data['phone']);
+      prefs.setString('username', data['username']);
+      prefs.setString('userid', data['userid']);
+      prefs.setString('role', data['role']);
+      prefs.setString('userstatus', data['userstatus']);
+      prefs.setString('registerdate', data['registerdate']);
+      prefs.setBool('blocked', data['blocked']);
+      _isLoading = false;
+      setState(() {});
+      if (data['role'] == 'admin' || data['role'] == 'creator') {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SamplePage(),
+          ),
+        );
+      } else {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SamplePageUser(),
+          ),
+        );
+      }
+    } else {
+      _isLoading = false;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Iltimos login yoki parolni tekshiring'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          duration: Duration(milliseconds: 1700),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      setState(() {});
+    }
   }
 
   @override
