@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:http/http.dart' as http;
-import 'package:online_sklad/models/transaktions_list.dart';
+import 'package:ombor_web/models/transaktions_list.dart';
 
 class TransaktionsPageProduct extends StatefulWidget {
   var productId;
@@ -25,18 +25,6 @@ class _TransktionPageState extends State<TransaktionsPageProduct> {
   var _selectedMenu = 1;
   var transaktionList = [];
   var listTransaktion = [];
-
-  Future<bool> checkInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        return true;
-      }
-    } on SocketException catch (_) {
-      return false;
-    }
-    return false;
-  }
 
   void _searchTransaktion(String value) {
     if (value.isEmpty) {

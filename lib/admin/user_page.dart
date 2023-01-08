@@ -4,11 +4,10 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
-import 'package:online_sklad/admin/tarnsaktion_page.dart';
-import 'package:online_sklad/admin/tarnsaktion_page_admin.dart';
-
-import 'package:online_sklad/models/user_list.dart';
-import 'package:online_sklad/user/tarnsaktion_page.dart';
+import 'package:ombor_web/admin/transaction_page.dart';
+import 'package:ombor_web/admin/transaktion_page_admin.dart';
+import 'package:ombor_web/models/user_list.dart';
+import 'package:ombor_web/user/transaktion_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPage extends StatefulWidget {
@@ -44,18 +43,6 @@ class _UserPageState extends State<UserPage>
   var _isLoad = true;
   var isUpdate = false;
   var _isChangePassword = false;
-
-  Future<bool> checkInternetConnection() async {
-    try {
-      final result = await InternetAddress.lookup('google.com');
-      if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-        return true;
-      }
-    } on SocketException catch (_) {
-      return false;
-    }
-    return false;
-  }
 
   Future<void> _getUser() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -114,16 +101,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _addUser() async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     final response = await http.post(
       Uri.parse(
           'https://golalang-online-sklad-production.up.railway.app/register'),
@@ -175,16 +152,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _deleteUser(String userId) async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     var url = Uri.parse(
         'https://golalang-online-sklad-production.up.railway.app/deleteUser?userid=$userId');
     var response = await http.delete(url);
@@ -231,16 +198,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _updateBlocked(String userNames, bool blocked) async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     var response = await http.put(
         Uri.parse(
             'https://golalang-online-sklad-production.up.railway.app/updateBlocked'),
@@ -286,16 +243,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _updateUser(String userId) async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     var response = await http.put(
         Uri.parse(
             'https://golalang-online-sklad-production.up.railway.app/updateUser?userId=$userId'),
@@ -349,16 +296,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _updateUserPassword(String userNames) async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     var response = await http.put(
         Uri.parse(
             'https://golalang-online-sklad-production.up.railway.app/updatePassword'),
@@ -399,16 +336,6 @@ class _UserPageState extends State<UserPage>
   }
 
   Future<void> _updateUserRole(String userNames, String roles) async {
-    checkInternetConnection().then((value) {
-      if (!value) {
-        _isLoad = false;
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-        return;
-      }
-    });
     var response = await http.put(
         Uri.parse(
             'https://golalang-online-sklad-production.up.railway.app/updateUserRole'),
@@ -864,14 +791,6 @@ class _UserPageState extends State<UserPage>
     _getUser();
     _getUsers();
     super.initState();
-    checkInternetConnection().then((value) {
-      if (!value) {
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          content: Text('Internetga ulanish yo\'q!'),
-          backgroundColor: Colors.red,
-        ));
-      }
-    });
   }
 
   @override
