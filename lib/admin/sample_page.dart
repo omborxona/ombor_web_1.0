@@ -105,6 +105,7 @@ class _SamplePageState extends State<SamplePage>
               borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
             duration: Duration(milliseconds: 1700),
+            backgroundColor: Colors.green,
             behavior: SnackBarBehavior.floating,
           ),
         );
