@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:ombor_web/admin/product_page.dart';
+import 'package:ombor_web/admin/user_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SamplePage extends StatefulWidget {
@@ -314,12 +316,12 @@ class _SamplePageState extends State<SamplePage>
                 highlightColor: Colors.white,
                 color: Colors.white,
                 onPressed: () {
-                  /*Navigator.push(
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const UserPage(),
                     ),
-                  );*/
+                  );
                 },
                 icon: SvgPicture.asset(
                   'assets/userIcon.svg',
@@ -353,7 +355,7 @@ class _SamplePageState extends State<SamplePage>
                 itemBuilder: (BuildContext context, int index) {
                   return GestureDetector(
                     onTap: () {
-                      /*Navigator.push(
+                      Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => ProductPage(
@@ -361,7 +363,7 @@ class _SamplePageState extends State<SamplePage>
                             category_name: category_name[index],
                           ),
                         ),
-                      );*/
+                      );
                     },
                     child: Card(
                       elevation: 10,
