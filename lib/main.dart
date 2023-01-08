@@ -2,17 +2,12 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:firebase_core/firebase_core.dart';
 import 'package:ombor_web/admin/sample_page.dart';
 import 'package:ombor_web/user/sample_page_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'firebase_options.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
   runApp(const MyApp());
 }
 
@@ -276,9 +271,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   },
                   child: Row(
                     children: [
-                      const SizedBox(
-                        width: 5,
-                      ),
+                      const SizedBox(width: 5,),
                       const Text('Kirish'),
                       const Expanded(child: SizedBox()),
                       if (_isLoading)
@@ -289,7 +282,15 @@ class _MyHomePageState extends State<MyHomePage> {
                             color: Colors.white,
                           ),
                         ),
-                      if (!_isLoading) const Icon(Icons.arrow_forward),
+                      if (!_isLoading)
+                        SizedBox(
+                          height: MediaQuery.of(context).size.height * 0.03,
+                          width: MediaQuery.of(context).size.height * 0.03,
+                          child: const Icon(
+                            color: Colors.white,
+                            Icons.arrow_forward,
+                          ),
+                        ),
                       const Expanded(child: SizedBox()),
                     ],
                   ),
